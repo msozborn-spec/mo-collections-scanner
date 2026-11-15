@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#202124">
+  <title>MO COLLECTIONS SCANNER</title>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: #202124;
+      color: #F0EDF1;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    h2 { font-size: 18px; }
+    #reader {
+      width: 100%;
+      max-width: 400px;
+      margin: 24px auto;
+    }
+    button {
+      padding: 12px 24px;
+      margin: 8px;
+      border: 1px solid #8E4D70;
+      border-radius: 8px;
+      background: #29252D;
+      color: #F0EDF1;
+      font-size: 15px;
+    }
+    #status {
+      color: #A9A3AE;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h2>MO COLLECTIONS</h2>
+  <p>バーコードをカメラにかざしてください</p>
+
+  <div id="reader"></div>
+  <button id="startButton" onclick="startCamera()">カメラを起動</button>
+  <button onclick="window.close()">閉じる</button>
+  <p id="status">カメラ起動前です</p>
+
+  <script>
+    let scanner = null;
+    let scanHandled = false;
+
+    async function startCamera() {
+      if (scanner) return;
+
+      scanHandled = false;
+      document.getElementById('status').textContent = 'カメラを起動しています...';
+
+      scanner = new Html5Qrcode('reader', {
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.EAN_13,
+          Html5QrcodeSupportedFormats.EAN_8
+        ]
+      });
+
+      try {
+        await scanner.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 280, height: 140 } },
+          async (decodedText) => {
+            if (scanHandled) return;
+            scanHandled = true;
+
+            document.getElementById('status').textContent =
+              '読み取り成功：' + decodedText;
+
+            try {
+              await scanner.stop();
+            } catch (e) {}
+
+            if (window.opener) {
+              window.opener.postMessage({
+                type: 'JAN_SCANNED',
+                code: decodedText
+              }, '*');
+
+              window.close();
+            } else {
+              document.getElementById('status').textContent =
+                '元のアプリに接続できませんでした。';
+            }
+          }
+        );
+
+        document.getElementById('startButton').disabled = true;
+        document.getElementById('status').textContent =
+          'バーコードを読み取っています...';
+
+      } catch (err) {
+        scanner = null;
+        document.getElementById('status').textContent =
+          'カメラを起動できませんでした：' + err;
+      }
+    }
+  </script>
+</body>
+</html>
