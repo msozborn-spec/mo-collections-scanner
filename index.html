@@ -35,7 +35,7 @@
       margin-bottom: 5px;
     }
 
-    /* カメラエリア全体 */
+    /* カメラエリア */
     .scanner-stage {
       position: relative;
       width: 100%;
@@ -73,23 +73,34 @@
       margin: 12px 0 -12px;
     }
 
-    /* カメラ映像 */
+    /* html5-qrcodeの領域 */
     #reader {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      border: none;
-      overflow: hidden;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
       background: transparent;
     }
+
+    /* ライブラリ内部の映像領域 */
+    #reader__scan_region {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 100%;
+      background: transparent !important;
+      overflow: hidden;
+    }
     
-    #reader video {
+    #reader__scan_region video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
       border-radius: 12px;
     }
-
+    
     /* 起動前の中央マーク */
     .scanner-placeholder {
       position: absolute;
