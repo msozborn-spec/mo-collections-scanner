@@ -77,21 +77,18 @@
     #reader {
       position: absolute;
       inset: 0;
-      width: 100% !important;
-      height: 100% !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: none !important;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: none;
       background: transparent;
     }
 
     /* ライブラリ内部の映像領域 */
     #reader__scan_region {
-      width: 100% !important;
-      height: 100% !important;
-      min-height: 100%;
-      background: transparent !important;
-      overflow: hidden;
+      width: 100%;
+      background: transparent;
     }
     
     #reader__scan_region video {
@@ -141,16 +138,6 @@
       pointer-events: none;
     }
     
-    /* html5-qrcodeの白い補助枠を非表示 */
-    #qr-shaded-region > div {
-      display: none !important;
-    }
-    
-    /* 周囲のブラックオーバーレイを解除 */
-    #qr-shaded-region {
-      border-color: transparent !important;
-    }
-
     .start-wrap {
       width: 100%;
       display: flex;
