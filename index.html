@@ -35,6 +35,20 @@
       margin-bottom: 5px;
     }
 
+    /* カメラエリア全体 */
+    .scanner-stage {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1 / 1;
+      margin: 24px auto;
+      background: #171923;
+      border: 1px solid #403847;
+      border-radius: 12px;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    
     .eyebrow {
       color: #D55787;
       font-family: Montserrat, sans-serif;
@@ -44,7 +58,7 @@
       margin: 0 0 14px;
     }
     
-      .sub-text {
+    .sub-text {
       color: #9ea1a3;
       font-size: 13px;
       line-height: 1.7;
@@ -59,26 +73,52 @@
       margin: 12px 0 -12px;
     }
 
+    /* カメラ映像 */
     #reader {
-      position: relative;
+      position: absolute;
+      inset: 0;
       width: 100%;
-      max-width: 400px;
-      box-sizing: border-box;
-      margin: 24px auto;
+      height: 100%;
+      margin: 0;
       padding: 0;
       border: none;
       overflow: hidden;
-      border-radius: 12px;
+      background: transparent;
     }
     
     #reader video {
       display: block;
       width: 100%;
+      height: 100%;
+      object-fit: cover;
       border-radius: 12px;
     }
 
-    /* ピンクのスキャンガイド */
-    #reader::after {
+    /* 起動前の中央マーク */
+    .scanner-placeholder {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: #171923;
+      color: #8D8995;
+      font-family: Montserrat, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+    
+    /* カメラ起動後に非表示 */
+    .scanner-stage.is-active .scanner-placeholder {
+      display: none;
+    }
+    
+    /* ピンクのスキャン枠 */
+    .scanner-stage::after {
       content: "";
       position: absolute;
       z-index: 20;
@@ -87,10 +127,10 @@
       transform: translate(-50%, -50%);
       width: min(280px, calc(100% - 32px));
       height: 140px;
-      box-sizing: border-box;
       border: 1px solid rgba(213, 87, 135, 0.9);
       border-radius: 5px;
-      box-shadow: 0 0 8px rgba(213, 87, 135, 0.18);
+      box-shadow: 0 0 8px rgba(213, 87, 135, 0.2);
+      box-sizing: border-box;
       pointer-events: none;
     }
     
@@ -189,7 +229,32 @@
 
   <p class="camera-label">CAMERA VIEW</p>
 
+  <div class="scanner-stage" id="scannerStage">
+
   <div id="reader"></div>
+
+  <!-- 起動前のプレースホルダー -->
+  <div class="scanner-placeholder" id="scannerPlaceholder">
+    <svg viewBox="0 0 64 64" width="52" height="52"
+         fill="none" stroke="#D55787"
+         stroke-width="1.5" stroke-linecap="round">
+
+      <path d="M10 23V12a2 2 0 0 1 2-2h11"/>
+      <path d="M41 10h11a2 2 0 0 1 2 2v11"/>
+      <path d="M54 41v11a2 2 0 0 1-2 2H41"/>
+      <path d="M23 54H12a2 2 0 0 1-2-2V41"/>
+
+      <path d="M17 32h30"/>
+      <path d="M22 25v14"/>
+      <path d="M28 25v14"/>
+      <path d="M35 25v14"/>
+      <path d="M42 25v14"/>
+    </svg>
+
+    <span>READY TO SCAN</span>
+  </div>
+
+</div>
 
   <p id="status">● CAMERA READY</p>
 
@@ -257,6 +322,10 @@
         document.getElementById('startButton').disabled = true;
         document.getElementById('status').textContent =
           '● SCANNING...';
+        document.getElementById('scannerStage')
+          .classList.add('is-active');
+        document.getElementById('scannerStage')
+          .classList.remove('is-active');
 
       } catch (err) {
         scanner = null;
