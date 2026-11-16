@@ -192,6 +192,18 @@
       cursor: not-allowed;
     }
 
+    /* カメラ起動中のキャンセルボタン */
+    .btn-start.is-cancel {
+      background: #29252D;
+      border: 1px solid #D55787;
+      color: #E9A0BC;
+    }
+    
+    .btn-start.is-cancel:hover {
+      background: #39303B;
+      filter: none;
+    }
+    
     /* 閉じるボタン（×とテキストの縦並び・枠なし） */
     .btn-close {
       display: inline-flex;
@@ -305,12 +317,12 @@
 
   <p id="status">● CAMERA READY</p>
 
-  <div class="start-wrap">
-    <button id="startButton" class="btn-start"
-      onclick="startCamera()">
-      カメラを起動
-    </button>
-  </div>
+  <button
+  id="startButton"
+  class="btn-start"
+  onclick="toggleCamera()">
+  カメラを起動
+</button>
 
   <div>
     <button class="btn-close" onclick="window.close()">
@@ -366,7 +378,12 @@
           }
         );
 
-        document.getElementById('startButton').disabled = true;
+        const btn = document.getElementById('startButton');
+
+        btn.disabled = false;
+        btn.textContent = '× キャンセル';
+        btn.classList.add('is-cancel');
+        
         document.getElementById('status').textContent =
           '● SCANNING...';
         
@@ -377,6 +394,42 @@
         scanner = null;
         document.getElementById('status').textContent =
           'カメラを起動できませんでした：' + err;
+      }
+    }
+
+    async function toggleCamera() {
+      if (scanner) {
+        const btn = document.getElementById('startButton');
+    
+        btn.disabled = true;
+        document.getElementById('status').textContent =
+          '● STOPPING...';
+    
+        try {
+          await scanner.stop();
+          scanner.clear();
+    
+          scanner = null;
+          scanHandled = false;
+    
+          document.getElementById('scannerStage')
+            .classList.remove('is-active');
+    
+          btn.textContent = 'カメラを起動';
+          btn.classList.remove('is-cancel');
+          btn.disabled = false;
+    
+          document.getElementById('status').textContent =
+            '● CAMERA READY';
+    
+        } catch (err) {
+          document.getElementById('status').textContent =
+            'カメラを停止できませんでした：' + err;
+    
+          btn.disabled = false;
+        }
+      } else {
+        startCamera();
       }
     }
   </script>
