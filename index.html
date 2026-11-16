@@ -120,6 +120,22 @@
     .scanner-stage.is-active .scanner-placeholder {
       display: none;
     }
+    /* html5-qrcodeの標準スキャン枠を透明化 */
+    #qr-shaded-region {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+    
+    /* ピンク枠の外側に暗いオーバーレイ */
+    .scanner-stage.is-active::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      background: rgba(0, 0, 0, 0.38);
+      pointer-events: none;
+    }
     
     /* ピンクのスキャン枠 */
     .scanner-stage::after {
@@ -131,9 +147,9 @@
       transform: translate(-50%, -50%);
       width: min(280px, calc(100% - 32px));
       height: 140px;
-      border: 1px solid rgba(213, 87, 135, 0.9);
+      border: 1px solid rgba(213, 87, 135, 0.95);
       border-radius: 5px;
-      box-shadow: 0 0 8px rgba(213, 87, 135, 0.2);
+      box-shadow: 0 0 8px rgba(213, 87, 135, 0.25);
       box-sizing: border-box;
       pointer-events: none;
     }
