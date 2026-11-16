@@ -9,19 +9,27 @@
   <title>MO COLLECTIONS SCANNER</title>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
+      box-sizing: border-box; /* paddingを含めて画面の高さに収める */
       padding: 24px 16px;
       background: #202124;
       color: #F0EDF1;
       font-family: sans-serif;
       text-align: center;
+      
       display: flex;
       flex-direction: column;
-      justify-content: center; /* 上下（高さ方向）の中央揃え */
-      align-items: center;     /* 左右の中央揃え（不要な場合は消してください） */
-      min-height: 100dvh;      /* 画面の高さ100%を確保（スマホのアドレスバー対策） */
+      justify-content: center; /* 上下の中央揃え */
+      align-items: center;     /* 左右の中央揃え */
+      min-height: 100dvh;
     }
+
     h2 { font-size: 18px; }
     #reader {
       width: 100%;
