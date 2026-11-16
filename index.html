@@ -17,13 +17,7 @@
     body {
       box-sizing: border-box;
       padding: 24px 16px;
-      background:
-        radial-gradient(
-          ellipse at 50% 0%,
-          rgba(72, 87, 151, 0.16),
-          transparent 65%
-        ),
-        #202124;
+      background: #202124;
       color: #F0EDF1;
       font-family: sans-serif;
       text-align: center;
@@ -36,43 +30,92 @@
 
     h2 {
       font-size: 19px;
-      letter-spacing: 2px;
       font-family: Montserrat, sans-serif;
-      margin-bottom: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
     }
 
+    .eyebrow {
+      color: #D55787;
+      font-family: Montserrat, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin: 0 0 14px;
+    }
+    
       .sub-text {
       color: #9ea1a3;
       font-size: 13px;
       line-height: 1.7;
+      margin-bottom: 12px;
     }
-    
-    .sub-text {
-      color: #9ea1a3;
-      font-size: 13px;
+
+    .camera-label {
+      color: #777985;
+      font-family: Montserrat, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin: 12px 0 -12px;
     }
 
     #reader {
+      position: relative;
       width: 100%;
       max-width: 400px;
       box-sizing: border-box;
       margin: 24px auto;
-      padding: 8px;
-      background: #171923;
-      border: 1px solid #403847;
-      border-radius: 16px;
+      padding: 0;
+      border: none;
       overflow: hidden;
+      border-radius: 12px;
     }
     
     #reader video {
-      border-radius: 10px;
+      display: block;
+      width: 100%;
+      border-radius: 12px;
     }
 
+    /* ピンクのスキャンガイド */
+    #reader::after {
+      content: "";
+      position: absolute;
+      z-index: 20;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(280px, calc(100% - 32px));
+      height: 140px;
+      box-sizing: border-box;
+      border: 1px solid rgba(213, 87, 135, 0.9);
+      border-radius: 5px;
+      box-shadow: 0 0 8px rgba(213, 87, 135, 0.18);
+      pointer-events: none;
+    }
+    
+    /* html5-qrcodeの白い補助枠を非表示 */
+    #qr-shaded-region > div {
+      display: none !important;
+    }
+    
+    /* 周囲のブラックオーバーレイを解除 */
+    #qr-shaded-region {
+      border-color: transparent !important;
+    }
+
+    .start-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
     .btn-start {
       width: 100%;
       max-width: 320px;
+      box-sizing: border-box;
       padding: 14px 24px;
-      margin: 8px;
+      margin: 8px 0;
       border: none;
       border-radius: 8px;
       background: linear-gradient(
@@ -87,7 +130,6 @@
       font-family: Montserrat, sans-serif;
       letter-spacing: 1px;
       cursor: pointer;
-      transition: 0.25s ease;
     }
     
     .btn-start:hover {
@@ -98,7 +140,6 @@
     .btn-start:disabled {
       opacity: 0.45;
       cursor: not-allowed;
-      transform: none;
     }
 
     /* 閉じるボタン（×とテキストの縦並び・枠なし） */
@@ -127,25 +168,33 @@
     }
 
     #status {
-      color: #A9A3AE;
-      font-size: 12px;
+      color: #D55787;
+      font-family: Montserrat, sans-serif;
+      font-size: 11px;
+      letter-spacing: 1px;
       margin-top: 8px;
       min-height: 18px;
-      letter-spacing: 0.3px;
     }
   </style>
 </head>
 <body>
-  <h2 style="color:#fff; font-family:Montserrat,sans-serif; letter-spacing:2px;">MO COLLECTIONS</h2>
-  <p class="sub-text">カメラを起動し、バーコードをカメラにかざしてください</p>
+
+  <h2>MO COLLECTIONS</h2>
+
+  <p class="eyebrow">BARCODE SCANNER</p>
+
+  <p class="sub-text">
+    カメラを起動し、バーコードをカメラにかざしてください
+  </p>
+
+  <p class="camera-label">CAMERA VIEW</p>
 
   <div id="reader"></div>
-  <p id="status"></p>
 
-  <div>
-    <button
-      id="startButton"
-      class="btn-start"
+  <p id="status">● CAMERA READY</p>
+
+  <div class="start-wrap">
+    <button id="startButton" class="btn-start"
       onclick="startCamera()">
       カメラを起動
     </button>
@@ -166,7 +215,8 @@
       if (scanner) return;
 
       scanHandled = false;
-      document.getElementById('status').textContent = 'カメラを起動しています...';
+      document.getElementById('status').textContent =
+        '● CAMERA STARTING...';
 
       scanner = new Html5Qrcode('reader', {
         formatsToSupport: [
@@ -206,7 +256,7 @@
 
         document.getElementById('startButton').disabled = true;
         document.getElementById('status').textContent =
-          'バーコードを読み取っています...';
+          '● SCANNING...';
 
       } catch (err) {
         scanner = null;
