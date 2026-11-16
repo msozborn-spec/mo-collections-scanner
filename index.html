@@ -32,6 +32,15 @@
       color: #F0EDF1;
       font-size: 15px;
     }
+    .btn-secondary {
+      padding: 12px 24px;
+      margin: 8px;
+      border: 1px solid #625D68;
+      border-radius: 8px;
+      background: rgba(180, 174, 188, 0.06);
+      color: #C5C0CA;
+      font-size: 15px;
+    }
     #status {
       color: #A9A3AE;
       font-size: 13px;
@@ -44,10 +53,12 @@
 
 
   <div id="reader"></div>
-  <button id="startButton" onclick="startCamera()">カメラを起動</button>
-  <button onclick="window.close()">閉じる</button>
-  <p id="status" style="color:#9ea1a3; font-size:10px;">カメラ起動前です</p>
-
+  <div>
+    <button id="startButton" onclick="startCamera()">カメラを起動</button>
+  <div>
+  </div>
+    <button class="btn-secondary" onclick="window.close()">閉じる</button>
+  </div>
   <script>
     let scanner = null;
     let scanHandled = false;
