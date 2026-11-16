@@ -40,13 +40,13 @@
 </head>
 <body>
   <h2 style="color:#fff; font-family:Montserrat,sans-serif; letter-spacing:2px;">MO COLLECTIONS</h2>
-  <p style="color:#9ea1a3;">バーコードをカメラにかざしてください</p>
+  <p style="color:#9ea1a3; font-size:13px;">カメラを起動し、バーコードをカメラにかざしてください</p>
 
 
   <div id="reader"></div>
   <button id="startButton" onclick="startCamera()">カメラを起動</button>
   <button onclick="window.close()">閉じる</button>
-  <p id="status">カメラ起動前です</p>
+  <p id="status" style="color:#9ea1a3; font-size:10px;">カメラ起動前です</p>
 
   <script>
     let scanner = null;
