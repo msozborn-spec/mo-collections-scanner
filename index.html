@@ -316,10 +316,9 @@
         document.getElementById('startButton').disabled = true;
         document.getElementById('status').textContent =
           '● SCANNING...';
+        
         document.getElementById('scannerStage')
           .classList.add('is-active');
-        document.getElementById('scannerStage')
-          .classList.remove('is-active');
 
       } catch (err) {
         scanner = null;
